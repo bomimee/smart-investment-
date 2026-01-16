@@ -2,5 +2,5 @@ export const API_BASE = process.env.EXPO_PUBLIC_API_BASE!;
 export const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID!;
 export const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID ?? "";
 export const GOOGLE_ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID ?? "";
-
+export const KAKAO_REST_KEY = process.env.EXPO_PUBLIC_KAKAO_REST_KEY
 if (!GOOGLE_WEB_CLIENT_ID) console.warn("Missing EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID");

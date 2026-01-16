@@ -21,9 +21,6 @@ export default function LoginScreen() {
   
   // ✅ 일단 useProxy 제거
   const redirectUri = AuthSession.makeRedirectUri();
-
-  console.log("redirectUri =", redirectUri);
-  console.log("GOOGLE_WEB_CLIENT_ID =", GOOGLE_WEB_CLIENT_ID);
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId: GOOGLE_WEB_CLIENT_ID,
     iosClientId: GOOGLE_IOS_CLIENT_ID,
