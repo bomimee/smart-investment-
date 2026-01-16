@@ -1,11 +1,11 @@
 import os
 import httpx
-from fastapi import FastAPI, HTTPException
+from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
+from config import KAKAO_REST_KEY
 
-app = FastAPI()
+router = APIRouter()
 
-KAKAO_REST_KEY = os.getenv("KAKAO_REST_KEY")  # 또는 EXPO_PUBLIC 말고 서버용 env로
 if not KAKAO_REST_KEY:
     # 개발 편의: 없으면 에러로 알려주기
     print("⚠️ Missing KAKAO_REST_KEY env var")
@@ -16,6 +16,7 @@ class KakaoLoginBody(BaseModel):
 
 @app.post("/auth/kakao")
 async def kakao_login(body: KakaoLoginBody):
+    print("called")
     if not KAKAO_REST_KEY:
         raise HTTPException(status_code=500, detail="Server misconfigured: KAKAO_REST_KEY missing")
 
