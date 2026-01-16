@@ -29,7 +29,7 @@ export default function TabLayout() {
         // ✅ 탭바 스타일(여기서 대부분 바꿈)
         tabBarStyle: {
           backgroundColor: C.card,
-          borderTopColor: "transparent",   // 위 경계선 제거
+          borderTopColor: "transparent", // 위 경계선 제거
           height: 64,
           paddingTop: 8,
           paddingBottom: 10,
@@ -38,8 +38,11 @@ export default function TabLayout() {
           position: "absolute",
           left: 14,
           right: 14,
-          bottom: 14,
-          borderRadius: 18,
+          bottom: 50,
+          borderTopLeftRadius: 18, // ✅
+          borderTopRightRadius: 18,
+          overflow: "hidden",
+
 
           // 그림자(iOS) / elevation(Android)
           shadowColor: "#000",
@@ -56,7 +59,7 @@ export default function TabLayout() {
         },
       }}
     >
-       <Tabs.Screen
+      <Tabs.Screen
         name="index"
         options={{
           title: "홈",
@@ -87,10 +90,24 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="settings"
+        name="login"
         options={{
-          title: "설정",
-          tabBarLabel: "설정",
+          title: "Login",
+          tabBarLabel: "Login",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "happy-outline" : "sad-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="setting"
+        options={{
+          title: "setting",
+          tabBarLabel: "Setting",
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
               name={focused ? "settings" : "settings-outline"}
@@ -103,3 +120,5 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+//npx expo start

@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 999,
     overflow: "hidden",
-    height: 40,
-    width: 220,
+    height: 30,
+    width: 150,
   },
   half: {
     flex: 1,

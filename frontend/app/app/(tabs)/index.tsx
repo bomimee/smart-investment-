@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import WebView from "react-native-webview";
 import { Dimensions } from "react-native";
-
+export const API_BASE = process.env.EXPO_PUBLIC_API_BASE!;
 const CHART_HEIGHT = Math.floor(Dimensions.get("window").height * 0.45);
 type OHLCV = {
   time: string;
@@ -27,8 +27,6 @@ type OHLCV = {
 type Signal = { time: string; type: "BUY" | "SELL"; price: number };
 
 export default function HomeScreen() {
-  const API_BASE = "http://192.168.0.102:8000";
-
   const { theme, scheme } = useTheme();
   const C = theme.colors;
   const styles = useMemo(() => createStyles(C, scheme), [C, scheme]);
@@ -275,8 +273,12 @@ export default function HomeScreen() {
       <ScrollView
         contentContainerStyle={[
           styles.container,
-          { backgroundColor: scheme === "dark" ? "transparent" : C.background },
+          {
+            backgroundColor: scheme === "dark" ? "transparent" : C.background,
+            paddingBottom: 140,
+          },
         ]}
+        keyboardShouldPersistTaps="handled"
       >
         <Text style={styles.title}>차트 조회</Text>
 
@@ -380,25 +382,24 @@ export default function HomeScreen() {
             </View>
           )}
         </View>
-
-        <View
-          style={[
-            styles.bottomBar,
-            {
-              backgroundColor: scheme === "dark" ? "transparent" : C.background,
-            },
-          ]}
-        >
-          <Pressable
-            onPress={fetchAnalysis}
-            style={[styles.button, { backgroundColor: C.primary }]}
-          >
-            <Text style={[styles.buttonText, { color: C.primaryText }]}>
-              {analysisLoading ? "분석중..." : "AI 분석"}
-            </Text>
-          </Pressable>
-        </View>
       </ScrollView>
+      <View
+        style={[
+          styles.bottomBar,
+          {
+            backgroundColor: scheme === "dark" ? "transparent" : C.background,
+          },
+        ]}
+      >
+        <Pressable
+          onPress={fetchAnalysis}
+          style={[styles.button, { backgroundColor: C.primary }]}
+        >
+          <Text style={[styles.buttonText, { color: C.primaryText }]}>
+            {analysisLoading ? "분석중..." : "AI 분석"}
+          </Text>
+        </Pressable>
+      </View>
     </Container>
   );
 }
@@ -424,17 +425,20 @@ function createStyles(
       position: "absolute",
       left: 0,
       right: 0,
-      bottom: 0,
-      padding: 12,
+      bottom: 100,
+      paddingHorizontal: 12,
+      paddingBottom: 12,
     },
-    topBar: {
-      paddingTop: 40, 
+    topBar: { 
+      paddingTop: 40,
       paddingHorizontal: 12,
       paddingBottom: 10,
+      display: "flex",
+      alignItems: "flex-end",
     },
     container: {
       paddingHorizontal: 12,
-      paddingBottom: 100,
+      paddingBottom: 10,
     },
 
     settingsBtn: {
@@ -463,7 +467,7 @@ function createStyles(
 
     label: {
       fontSize: 12,
-      marginBottom: 6,
+      margin: 6,
       opacity: 0.9,
       color: isDark ? C.textMuted : C.textMuted,
       fontWeight: "600",

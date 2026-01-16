@@ -11,8 +11,8 @@ export const THEME = {
   light: {
     name: "light",
     colors: {
-      background: "#F6F7F2",
-      card: "#FFFFF0",
+      background: "#FFFFF0",
+      card: "#F6F7F2",
       text: "#2D3640",
       textMuted: "#5A7863",
       border: "#C8D6C2",
