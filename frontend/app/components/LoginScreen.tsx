@@ -18,7 +18,7 @@ export default function LoginScreen() {
   const { theme, scheme } = useTheme();
   const C = theme.colors;
   const styles = useMemo(() => createStyles(C, scheme), [C, scheme]);
-
+  
   // ✅ 일단 useProxy 제거
   const redirectUri = AuthSession.makeRedirectUri();
 
@@ -67,7 +67,7 @@ export default function LoginScreen() {
       <Pressable
         disabled={!request}
         onPress={loginWithGoogle}
-        style={styles.imageBtn}
+        style={styles.imageGoogleBtn}
       >
         <Image
           source={require("@/assets/images/google.png")}
@@ -106,11 +106,16 @@ function createStyles(C: any, scheme: "light" | "dark") {
       height: 50,
       justifyContent: "center",
       alignItems: "center",
-      borderRadius: 12,
-      borderWidth: 1,
-      borderColor: C.border,
       overflow: "hidden",
-      backgroundColor: C.card,
+      backgroundColor: C.background,
+    },
+    imageGoogleBtn: {
+      width: 50,
+      height: 50,
+      justifyContent: "center",
+      alignItems: "center",
+      overflow: "hidden",
+      backgroundColor: "white",
     },
     imageBtnImg: {
       width: "100%",

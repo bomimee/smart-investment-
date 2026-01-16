@@ -26,8 +26,19 @@ export default function Login() {
       : {};
 
   return (
-    <Container style={styles.bg} {...containerProps}>
-      <View style={styles.card}>
+    <Container
+      style={[
+        styles.bg,
+        { backgroundColor: scheme === "dark" ? "transparent" : C.background },
+      ]}
+      {...containerProps}
+    >
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: scheme === "dark" ? "transparent" : C.background },
+        ]}
+      >
         {/* 입력 영역 */}
         <View style={styles.field}>
           <Text style={styles.label}>ID</Text>
@@ -111,7 +122,7 @@ function createStyles(
       paddingHorizontal: 12,
       paddingVertical: 10,
       fontSize: 16,
-      backgroundColor: "#fff",
+      backgroundColor: C.card,
       color: C.text,
     },
 
