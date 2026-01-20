@@ -1,10 +1,10 @@
 import requests
-from config import (
+from backend.app.core.config import (
     DOMAIN_REAL, DOMAIN_VTS,
     PATH_DAILY_CHART,
     DEFAULT_CONTENT_TYPE, DEFAULT_CUSTTYPE,
 )
-from models import DailyChartQueryParam
+from backend.app.schemas.models import DailyChartQueryParam
 
 def _base(is_mock: bool) -> str:
     return DOMAIN_VTS if is_mock else DOMAIN_REAL

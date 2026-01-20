@@ -5,8 +5,8 @@ from typing import Any, Dict, List, Optional
 
 from google import genai
 
-from prompts import CHART_ANALYSIS_PROMPT  # 네 경로에 맞게 수정
-from config import OPENAI_API_KEY
+from backend.app.llm.prompts import CHART_ANALYSIS_PROMPT  # 네 경로에 맞게 수정
+from backend.app.core.config import OPENAI_API_KEY
 def _extract_json(text: str) -> Optional[str]:
     if not text:
         return None

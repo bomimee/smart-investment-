@@ -1,7 +1,7 @@
-from config import APP_KEY, APP_SECRET
-from auth import get_access_token, get_approval_key
-from kis_rest import KISRestClient
-from analyzer import analyze_from_chart
+from backend.app.core.config import APP_KEY, APP_SECRET
+from backend.app.services.auth import get_access_token, get_approval_key
+from backend.app.clients.kis_rest import KISRestClient
+from backend.app.schemas.chart import analyze_from_chart
 # from kis_ws import run_ws
 # from models import WsSubscribeInput
 

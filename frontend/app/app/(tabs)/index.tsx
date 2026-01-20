@@ -11,9 +11,11 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import WebView from "react-native-webview";
-import { Dimensions } from "react-native";
+import SearchCode from "@/components/SearchCode";
+
 export const API_BASE = process.env.EXPO_PUBLIC_API_BASE!;
 const CHART_HEIGHT = Math.floor(Dimensions.get("window").height * 0.45);
 type OHLCV = {
@@ -44,7 +46,7 @@ export default function HomeScreen() {
 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
-
+  const [search, setSearch] = useState(false);
   const [data, setData] = useState<{
     ohlcv: OHLCV[];
     signals: Signal[];
@@ -142,7 +144,12 @@ export default function HomeScreen() {
       setAnalysisLoading(false);
     }
   };
-
+  function handleSearch(bool: boolean) {
+    setSearch(bool);
+  }
+  function handleCode(cd: string) {
+    setCode(cd);
+  }
   const html = useMemo(() => {
     const ohlcv = data?.ohlcv ?? [];
     const signals = data?.signals ?? [];
@@ -260,146 +267,172 @@ export default function HomeScreen() {
 
   return (
     <Container style={styles.bg} {...containerProps}>
-      <View
-        style={[
-          styles.topBar,
-          { backgroundColor: scheme === "dark" ? "transparent" : C.background },
-        ]}
-      >
-        <ThemeToggle />
-        {/* ThemeToggle 내부에서 light/dark 바꾸는 switch/segmented control */}
-      </View>
-
-      <ScrollView
-        contentContainerStyle={[
-          styles.container,
-          {
-            backgroundColor: scheme === "dark" ? "transparent" : C.background,
-            paddingBottom: 140,
-          },
-        ]}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Text style={styles.title}>차트 조회</Text>
-
-        <View style={styles.formRow}>
-          <View style={styles.field}>
-            <Text style={styles.label}>종목코드(6자리)</Text>
-            <TextInput
-              value={code}
-              onChangeText={setCode}
-              placeholder="예: 005930"
-              placeholderTextColor={C.textMuted}
-              keyboardType="number-pad"
-              maxLength={6}
-              style={styles.input}
-            />
-          </View>
-
-          <Pressable
-            onPress={fetchChart}
-            disabled={loading}
-            style={({ pressed }) => [
-              styles.button,
-              loading && styles.buttonDisabled,
-              pressed && !loading ? styles.buttonPressed : null,
+      {search && (
+        <SearchCode handleSearch={handleSearch} handleCode={handleCode} />
+      )}
+      {!search && (
+        <Container>
+          <View
+            style={[
+              styles.topBar,
+              {
+                backgroundColor:
+                  scheme === "dark" ? "transparent" : C.background,
+              },
             ]}
           >
-            <Text style={styles.buttonText}>
-              {loading ? "조회중..." : "조회"}
-            </Text>
-          </Pressable>
-        </View>
-
-        <View style={styles.formRow}>
-          <View style={styles.field}>
-            <Text style={styles.label}>시작일(YYYYMMDD)</Text>
-            <TextInput
-              value={start}
-              onChangeText={setStart}
-              keyboardType="number-pad"
-              maxLength={8}
-              style={styles.input}
-            />
+            <ThemeToggle />
+            {/* ThemeToggle 내부에서 light/dark 바꾸는 switch/segmented control */}
           </View>
-          <View style={styles.field}>
-            <Text style={styles.label}>종료일(YYYYMMDD)</Text>
-            <TextInput
-              value={end}
-              onChangeText={setEnd}
-              keyboardType="number-pad"
-              maxLength={8}
-              style={styles.input}
-            />
-          </View>
-        </View>
+          <ScrollView
+            contentContainerStyle={[
+              styles.container,
+              {
+                backgroundColor:
+                  scheme === "dark" ? "transparent" : C.background,
+                paddingBottom: 140,
+              },
+            ]}
+            keyboardShouldPersistTaps="handled"
+          >
+            <Text style={styles.title}>차트 조회</Text>
 
-        {!!err && <Text style={styles.error}>{err}</Text>}
+            <View style={styles.formRow}>
+              <View style={styles.field}>
+                <Text style={styles.label}>종목코드(6자리)</Text>
+                <TextInput
+                  value={code}
+                  onChangeText={setCode}
+                  placeholder="예: 005930"
+                  placeholderTextColor={C.textMuted}
+                  keyboardType="number-pad"
+                  maxLength={6}
+                  style={styles.input}
+                />
+              </View>
 
-        {loading && (
-          <View style={styles.loading}>
-            <ActivityIndicator />
-          </View>
-        )}
-
-        {data && (
-          <View style={styles.summary}>
-            <Text style={styles.data}>종목: {data.code}</Text>
-            <Text style={styles.data}>
-              Latest close: {data.summary?.latest_close ?? "-"}
-            </Text>
-            <Text style={styles.data}>
-              Signals: {data.summary?.num_signals ?? 0}
-            </Text>
-            <Text style={styles.data}>
-              Latest signal:{" "}
-              {data.summary?.latest_signal
-                ? `${data.summary.latest_signal.type} @ ${data.summary.latest_signal.time}`
-                : "None"}
-            </Text>
-          </View>
-        )}
-
-        <View style={styles.chart}>
-          {data ? (
-            <WebView
-              originWhitelist={["*"]}
-              source={{ html }}
-              javaScriptEnabled
-              domStorageEnabled
-              mixedContentMode="always"
-              onError={(e) => console.log("WEBVIEW onError:", e.nativeEvent)}
-              onHttpError={(e) =>
-                console.log("WEBVIEW onHttpError:", e.nativeEvent)
-              }
-              onMessage={(e) => console.log("WEBVIEW MSG:", e.nativeEvent.data)}
-            />
-          ) : (
-            <View style={styles.empty}>
-              <Text style={styles.emptyText}>
-                종목코드를 입력하고 조회를 눌러 차트를 불러오세요.
-              </Text>
+              <Pressable
+                onPress={fetchChart}
+                disabled={loading}
+                style={({ pressed }) => [
+                  styles.button,
+                  loading && styles.buttonDisabled,
+                  pressed && !loading ? styles.buttonPressed : null,
+                ]}
+              >
+                <Text style={styles.buttonText}>
+                  {loading ? "조회중..." : "조회"}
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={() => setSearch(true)}
+                disabled={loading}
+                style={({ pressed }) => [
+                  styles.button,
+                  loading && styles.buttonDisabled,
+                  pressed && !loading ? styles.buttonPressed : null,
+                ]}
+              >
+                <Text style={styles.buttonText}>검색</Text>
+              </Pressable>
             </View>
-          )}
-        </View>
-      </ScrollView>
-      <View
-        style={[
-          styles.bottomBar,
-          {
-            backgroundColor: scheme === "dark" ? "transparent" : C.background,
-          },
-        ]}
-      >
-        <Pressable
-          onPress={fetchAnalysis}
-          style={[styles.button, { backgroundColor: C.primary }]}
-        >
-          <Text style={[styles.buttonText, { color: C.primaryText }]}>
-            {analysisLoading ? "분석중..." : "AI 분석"}
-          </Text>
-        </Pressable>
-      </View>
+
+            <View style={styles.formRow}>
+              <View style={styles.field}>
+                <Text style={styles.label}>시작일(YYYYMMDD)</Text>
+                <TextInput
+                  value={start}
+                  onChangeText={setStart}
+                  keyboardType="number-pad"
+                  maxLength={8}
+                  style={styles.input}
+                />
+              </View>
+              <View style={styles.field}>
+                <Text style={styles.label}>종료일(YYYYMMDD)</Text>
+                <TextInput
+                  value={end}
+                  onChangeText={setEnd}
+                  keyboardType="number-pad"
+                  maxLength={8}
+                  style={styles.input}
+                />
+              </View>
+            </View>
+
+            {!!err && <Text style={styles.error}>{err}</Text>}
+
+            {loading && (
+              <View style={styles.loading}>
+                <ActivityIndicator />
+              </View>
+            )}
+
+            {data && (
+              <View style={styles.summary}>
+                <Text style={styles.data}>종목: {data.code}</Text>
+                <Text style={styles.data}>
+                  Latest close: {data.summary?.latest_close ?? "-"}
+                </Text>
+                <Text style={styles.data}>
+                  Signals: {data.summary?.num_signals ?? 0}
+                </Text>
+                <Text style={styles.data}>
+                  Latest signal:{" "}
+                  {data.summary?.latest_signal
+                    ? `${data.summary.latest_signal.type} @ ${data.summary.latest_signal.time}`
+                    : "None"}
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.chart}>
+              {data ? (
+                <WebView
+                  originWhitelist={["*"]}
+                  source={{ html }}
+                  javaScriptEnabled
+                  domStorageEnabled
+                  mixedContentMode="always"
+                  onError={(e) =>
+                    console.log("WEBVIEW onError:", e.nativeEvent)
+                  }
+                  onHttpError={(e) =>
+                    console.log("WEBVIEW onHttpError:", e.nativeEvent)
+                  }
+                  onMessage={(e) =>
+                    console.log("WEBVIEW MSG:", e.nativeEvent.data)
+                  }
+                />
+              ) : (
+                <View style={styles.empty}>
+                  <Text style={styles.emptyText}>
+                    종목코드를 입력하고 조회를 눌러 차트를 불러오세요.
+                  </Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+          <View
+            style={[
+              styles.bottomBar,
+              {
+                backgroundColor:
+                  scheme === "dark" ? "transparent" : C.background,
+              },
+            ]}
+          >
+            <Pressable
+              onPress={fetchAnalysis}
+              style={[styles.button, { backgroundColor: C.primary }]}
+            >
+              <Text style={[styles.buttonText, { color: C.primaryText }]}>
+                {analysisLoading ? "분석중..." : "AI 분석"}
+              </Text>
+            </Pressable>
+          </View>
+        </Container>
+      )}
     </Container>
   );
 }
@@ -429,7 +462,7 @@ function createStyles(
       paddingHorizontal: 12,
       paddingBottom: 12,
     },
-    topBar: { 
+    topBar: {
       paddingTop: 40,
       paddingHorizontal: 12,
       paddingBottom: 10,

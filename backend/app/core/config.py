@@ -1,5 +1,5 @@
 APP_KEY = ""
-APP_SECRET = "+/="
+APP_SECRET = ""
 DOMAIN_REAL = "https://openapi.koreainvestment.com:9443"
 DOMAIN_VTS  = "https://openapivts.koreainvestment.com:29443"
 PATH = "/oauth2/Approval"

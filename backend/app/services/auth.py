@@ -1,10 +1,10 @@
 import requests
-from config import (
+from backend.app.core.config import (
     DOMAIN_REAL, DOMAIN_VTS,
     PATH_APPROVAL, PATH_TOKEN,
     DEFAULT_CONTENT_TYPE,
 )
-from models import ApprovalRequestBody, TokenRequestBody
+from backend.app.schemas.models import ApprovalRequestBody, TokenRequestBody
 
 def _base(is_mock: bool) -> str:
     return DOMAIN_VTS if is_mock else DOMAIN_REAL

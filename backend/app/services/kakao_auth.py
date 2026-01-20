@@ -2,7 +2,7 @@ import os
 import httpx
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
-from config import KAKAO_REST_KEY
+from backend.app.core.config import KAKAO_REST_KEY
 
 router = APIRouter()
 

@@ -1,8 +1,8 @@
 # kis_ws.py
 import json
 import websocket
-from config import WS_URL_REAL, WS_URL_MOCK, DEFAULT_CUSTTYPE
-from models import WsSubscribeInput
+from backend.app.core.config import WS_URL_REAL, WS_URL_MOCK, DEFAULT_CUSTTYPE
+from backend.app.schemas.models import WsSubscribeInput
 
 def _ws_url(is_mock: bool) -> str:
     return WS_URL_MOCK if is_mock else WS_URL_REAL

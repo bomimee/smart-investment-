@@ -104,7 +104,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="setting"
+        name="settings"
         options={{
           title: "setting",
           tabBarLabel: "Setting",
