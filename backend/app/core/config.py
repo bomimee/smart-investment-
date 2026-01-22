@@ -18,7 +18,7 @@ DEFAULT_CUSTTYPE = "P"
 OPENAI_API_KEY = ""
 GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
-
+WEB_CLIENT_ID = ""
 KAKAO_REST_KEY = ""      # 내 앱의 REST API 키로 변경 필수
 kauth_host = "https://kauth.kakao.com" # 액세스 토큰 요청을 보낼 카카오 인증 서버 주소
 kapi_host = "https://kapi.kakao.com"   # 카카오 API 호출 서버 주소

@@ -3,11 +3,10 @@ from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
-
-WEB_CLIENT_ID = "1080162791522-m7qtr31gopbd60sbo5q7f8qt41p5i3mv.apps.googleusercontent.com"
+from backend.app.core.config import WEB_CLIENT_ID
+from server import app
 
 router = APIRouter()
-
 class GoogleLoginBody(BaseModel):
     id_token: str
 

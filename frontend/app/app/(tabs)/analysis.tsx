@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Analysis = {
   code?: string;
@@ -33,6 +34,7 @@ const badgeColors = (v: "BUY" | "SELL" | "HOLD") => {
 };
 
 export default function AnalysisScreen() {
+  const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ payload?: string }>();
 
   const analysis: Analysis | null = useMemo(() => {
@@ -56,7 +58,15 @@ export default function AnalysisScreen() {
   const badge = badgeColors(analysis.verdict);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+     <ScrollView
+      style={{ flex: 1, backgroundColor: "#DBE4C9" }}
+      contentContainerStyle={[
+        styles.container,
+        { paddingBottom: 140 + insets.bottom, paddingTop: 80 }, 
+      ]}
+      contentInsetAdjustmentBehavior="always"
+      keyboardShouldPersistTaps="handled"
+    >
       <View style={styles.card}>
         <View style={styles.rowBetween}>
           <Text style={styles.title}>AI 분석</Text>
@@ -197,7 +207,6 @@ export default function AnalysisScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 14,
-    marginTop: 30,
     backgroundColor: "#DBE4C9",
     flexGrow: 1,
   },

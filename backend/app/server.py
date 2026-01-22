@@ -11,6 +11,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 import json
 from backend.app.core.json_utils import sanitize_json
+from backend.app.services.kakao_auth import router as kakao_router
 
 BASE_DIR = Path(__file__).resolve().parent   
 STOCKS_PATH = BASE_DIR.parent / "data" /"generated" / "stocks.json"  
@@ -70,11 +71,8 @@ def api_list():
 
     with STOCKS_PATH.open("r", encoding="utf-8") as f:
         return sanitize_json(json.load(f))
-    
+
+app.include_router(kakao_router) 
 #python -m uvicorn server:app --reload --host 0.0.0.0 --port 8000
 #python -m uvicorn backend.app.server:app --reload --host 0.0.0.0 --port 8000
 
-# 또는 프로젝트 실행/패키지 구조에 따라:
-# from backend.app.core.json_utils import sanitize_json
-
-# ...

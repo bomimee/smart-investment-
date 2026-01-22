@@ -97,7 +97,6 @@ export default function SearchCode({
           onChangeText={setSearchWords}
           placeholder="종목이름 또는 코드"
           placeholderTextColor={C.textMuted}
-          keyboardType="number-pad"
           maxLength={6}
           style={{
             borderWidth: 1,

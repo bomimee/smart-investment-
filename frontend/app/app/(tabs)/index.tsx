@@ -17,7 +17,7 @@ import WebView from "react-native-webview";
 import SearchCode from "@/components/SearchCode";
 
 export const API_BASE = process.env.EXPO_PUBLIC_API_BASE!;
-const CHART_HEIGHT = Math.floor(Dimensions.get("window").height * 0.45);
+const CHART_HEIGHT = Math.floor(Dimensions.get("window").height * 0.4);
 type OHLCV = {
   time: string;
   open: number;
@@ -32,7 +32,8 @@ export default function HomeScreen() {
   const { theme, scheme } = useTheme();
   const C = theme.colors;
   const styles = useMemo(() => createStyles(C, scheme), [C, scheme]);
-
+  const yyyymmdd = (d = new Date()) =>
+  `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
   // 다크면 배경이미지, 라이트면 그냥 View
   const Container: any = scheme === "dark" ? ImageBackground : View;
   const containerProps =
@@ -42,7 +43,7 @@ export default function HomeScreen() {
 
   const [code, setCode] = useState<string>("068270");
   const [start, setStart] = useState<string>("20240101");
-  const [end, setEnd] = useState<string>("20250114");
+  const [end, setEnd] = useState<string>(yyyymmdd);
 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
