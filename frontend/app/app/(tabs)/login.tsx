@@ -100,7 +100,7 @@ export default function Login() {
               <Text style={styles.buttonOutlineText}>회원가입</Text>
             </Pressable>
           </View>
-          <LoginScreen onKakaoPress={onKakaoPress} />
+          <LoginScreen onKakaoPress={onKakaoPress} onGoogleSuccess={(email) => setUser(email)}/>
         </View>
       )}
       {user && <Text>환영합니다, {user}님</Text>}

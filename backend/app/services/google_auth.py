@@ -4,14 +4,15 @@ from pydantic import BaseModel
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 from backend.app.core.config import WEB_CLIENT_ID
-from server import app
 
 router = APIRouter()
+
 class GoogleLoginBody(BaseModel):
     id_token: str
 
-@app.post("/auth/google")
+@router.post("/auth/google")
 def google_login(body: GoogleLoginBody):
+    print("called google")
     try:
         payload = id_token.verify_oauth2_token(
             body.id_token,

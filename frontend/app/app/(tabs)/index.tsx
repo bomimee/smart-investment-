@@ -44,7 +44,6 @@ export default function HomeScreen() {
   const [code, setCode] = useState<string>("068270");
   const [start, setStart] = useState<string>("20240101");
   const [end, setEnd] = useState<string>(yyyymmdd);
-
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
   const [search, setSearch] = useState(false);
