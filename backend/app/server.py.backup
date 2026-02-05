@@ -3,9 +3,10 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from .llm.llm import analyze_chart_with_gemini, analyze_news_with_gemini
 from .clients.kis_rest import KISRestClient
-from .clients.massive import get_us_stock_chart
+from .clients.massive import get_massive_client
 from .services.auth import get_access_token
 from .core.config import APP_KEY, APP_SECRET
+from datetime import datetime
 from .schemas.signals import to_ohlcv, generate_ma_signals, summarize
 from .schemas.models import AnalyzeRequest
 
@@ -18,7 +19,6 @@ from .repository.stocks import repo
 from contextlib import asynccontextmanager
 from pathlib import Path
 import json
-from datetime import datetime
 from .core.json_utils import sanitize_json
 from .services.kakao_auth import router as kakao_router
 from .services.google_auth import router as google_router
@@ -98,7 +98,7 @@ def api_list(market: str = Query("KOREA")):  # KOREA 또는 US
     if market == "US":
         # 미국 주식 리스트 - Massive API에서 전체 목록 가져오기
         try:
-            from .clients.massive import get_massive_client
+from .clients.massive import get_massive_client, get_us_stock_chart
 
             client = get_massive_client()
 
@@ -142,26 +142,9 @@ def api_list(market: str = Query("KOREA")):  # KOREA 또는 US
 
         except Exception as e:
             print(f"Error fetching US stocks: {e}")
-            # Fallback to static data
-            us_stocks_path = BASE_DIR.parent / "data" / "generated" / "us_stocks.json"
-            if us_stocks_path.exists():
-                with us_stocks_path.open("r", encoding="utf-8") as f:
-                    us_data = json.load(f)
-                    normalized_data = []
-                    for item in us_data:
-                        normalized_data.append(
-                            {
-                                "code": item["symbol"],
-                                "name": item["name"],
-                                "sector": item.get("sector", ""),
-                                "description": item.get("description", ""),
-                            }
-                        )
-                    return sanitize_json(normalized_data)
-            else:
-                raise HTTPException(
-                    status_code=404, detail="US stocks data not available"
-                )
+            raise HTTPException(
+                status_code=500, detail=f"Failed to fetch US stocks: {str(e)}"
+            )
     else:
         # 한국 주식 리스트
         if not STOCKS_PATH.exists():

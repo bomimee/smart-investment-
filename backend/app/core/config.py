@@ -26,5 +26,5 @@ kauth_host = "https://kauth.kakao.com"  # 액세스 토큰 요청을 보낼 카�
 kapi_host = "https://kapi.kakao.com"  # 카카오 API 호출 서버 주소
 
 # Massive API Key for US stock data
-MASSIVE_API_KEY = ""  # 더미 모드: 실제 API 키로 변경 필요
-MASSIVE_API_BASE_URL = "https://api.massive.com"  # Massive API 기본 URL
+MASSIVE_API_KEY = ""  # 실제 API 키로 변경 필요
+MASSIVE_API_BASE_URL = "https://api.massive.com"  # Polygon.io/Massive API 기본 URL
