@@ -18,6 +18,7 @@ import {
 import WebView from "react-native-webview";
 import SearchCode from "@/components/SearchCode";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import DatePicker from "@/components/DatePicker";
 
 export const API_BASE = process.env.EXPO_PUBLIC_API_BASE!;
 const CHART_HEIGHT = Math.floor(Dimensions.get("window").height * 0.4);
@@ -354,7 +355,7 @@ export default function HomeScreen() {
             ]}
             keyboardShouldPersistTaps="handled"
           >
-            <Text style={styles.title}>차트 조회</Text>
+            <Text style={styles.title}>차트 분석 Dashboard</Text>
 
             <View style={styles.formRow}>
               <View style={styles.field}>
@@ -372,20 +373,7 @@ export default function HomeScreen() {
                   autoCapitalize="characters"
                 />
               </View>
-
-              <Pressable
-                onPress={fetchChart}
-                disabled={loading}
-                style={({ pressed }) => [
-                  styles.button,
-                  loading && styles.buttonDisabled,
-                  pressed && !loading ? styles.buttonPressed : null,
-                ]}
-              >
-                <Text style={styles.buttonText}>
-                  {loading ? "조회중..." : "조회"}
-                </Text>
-              </Pressable>
+            
               <Pressable
                 onPress={() => setSearch(true)}
                 disabled={loading}
@@ -402,25 +390,34 @@ export default function HomeScreen() {
             <View style={styles.formRow}>
               <View style={styles.field}>
                 <Text style={styles.label}>시작일(YYYYMMDD)</Text>
-                <TextInput
+                <DatePicker
                   value={start}
-                  onChangeText={setStart}
-                  keyboardType="number-pad"
-                  maxLength={8}
-                  style={styles.input}
+                  onChange={setStart}
+                  label=""
                 />
               </View>
               <View style={styles.field}>
                 <Text style={styles.label}>종료일(YYYYMMDD)</Text>
-                <TextInput
+                <DatePicker
                   value={end}
-                  onChangeText={setEnd}
-                  keyboardType="number-pad"
-                  maxLength={8}
-                  style={styles.input}
+                  onChange={setEnd}
+                  label=""
                 />
               </View>
             </View>
+             <Pressable
+                onPress={fetchChart}
+                disabled={loading}
+                style={({ pressed }) => [
+                  styles.button,
+                  loading && styles.buttonDisabled,
+                  pressed && !loading ? styles.buttonPressed : null,
+                ]}
+              >
+                <Text style={styles.buttonText}>
+                  {loading ? "조회중..." : "차트 조회"}
+                </Text>
+              </Pressable>
 
             {!!err && <Text style={styles.error}>{err}</Text>}
 
@@ -538,7 +535,7 @@ function createStyles(
     },
 
     formRow: { flexDirection: "row", gap: 12, alignItems: "flex-end" },
-    field: { flex: 1 },
+    field: { flex: 1, marginBottom: 5 },
 
     label: {
       fontSize: 12,
@@ -571,6 +568,7 @@ function createStyles(
       backgroundColor: C.primary,
       borderWidth: 1,
       borderColor: C.border,
+      marginBottom: 5
     },
     buttonDisabled: { opacity: 0.55 },
     buttonPressed: { opacity: 0.85 },
