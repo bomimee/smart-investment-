@@ -88,6 +88,21 @@ export default function TabLayout() {
           ),
         }}
       />
+       <Tabs.Screen
+        name="news"
+        options={{
+          title: "뉴스 & 추천",
+          tabBarLabel: "뉴스",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "newspaper" : "newspaper-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+
 
       <Tabs.Screen
         name="login"

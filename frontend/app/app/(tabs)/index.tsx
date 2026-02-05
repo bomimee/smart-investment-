@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { router } from "expo-router";
 import { useTheme } from "../../provider/ThemeContext";
+import { useMarket } from "../../provider/MarketContext";
 import ThemeToggle from "@/components/ThemeToggle";
+import MarketToggle from "@/components/MarketToggle";
 import {
   View,
   Text,
@@ -15,6 +17,7 @@ import {
 } from "react-native";
 import WebView from "react-native-webview";
 import SearchCode from "@/components/SearchCode";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const API_BASE = process.env.EXPO_PUBLIC_API_BASE!;
 const CHART_HEIGHT = Math.floor(Dimensions.get("window").height * 0.4);
@@ -29,7 +32,9 @@ type OHLCV = {
 type Signal = { time: string; type: "BUY" | "SELL"; price: number };
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
   const { theme, scheme } = useTheme();
+  const { market } = useMarket();
   const C = theme.colors;
   const styles = useMemo(() => createStyles(C, scheme), [C, scheme]);
   const yyyymmdd = (d = new Date()) =>
@@ -41,22 +46,38 @@ export default function HomeScreen() {
       ? { source: theme.backgroundImage, resizeMode: "cover" as const }
       : {};
 
-  const [code, setCode] = useState<string>("068270");
+  const defaultCode = market === 'US' ? 'AAPL' : '068270';
+  const [code, setCode] = useState<string>(defaultCode);
+  const [stockName, setStockName] = useState<string>("");
   const [start, setStart] = useState<string>("20240101");
   const [end, setEnd] = useState<string>(yyyymmdd);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string>("");
   const [search, setSearch] = useState(false);
+
+  // market이 변경될 때 default 코드로 업데이트
+  React.useEffect(() => {
+    setCode(market === 'US' ? 'AAPL' : '068270');
+    setStockName('');
+  }, [market]);
   const [data, setData] = useState<{
     ohlcv: OHLCV[];
     signals: Signal[];
     summary: any;
     code: string;
+    name: string;
   } | null>(null);
 
   const [analysisLoading, setAnalysisLoading] = useState(false);
 
-  const isValidCode = (v: string) => /^[0-9]{6}$/.test(v.trim());
+  const isValidCode = (v: string) => {
+    const trimmed = v.trim();
+    if (market === "KOREA") {
+      return /^[0-9]{6}$/.test(trimmed);
+    } else {
+      return /^[A-Z]{1,5}$/.test(trimmed);
+    }
+  };
   const isValidDate = (v: string) => /^[0-9]{8}$/.test(v.trim());
 
   const fetchChart = async () => {
@@ -65,7 +86,9 @@ export default function HomeScreen() {
     const e = end.trim();
 
     if (!isValidCode(c)) {
-      setErr("종목코드는 6자리 숫자(예: 005930)로 입력해줘.");
+      const example = market === "KOREA" ? "005930" : "AAPL";
+      const format = market === "KOREA" ? "6자리 숫자" : "1-5자리 영문 대문자";
+      setErr(`종목코드는 ${format}(예: ${example})로 입력해줘.`);
       return;
     }
     if (!isValidDate(s) || !isValidDate(e)) {
@@ -79,10 +102,10 @@ export default function HomeScreen() {
 
     try {
       const url = `${API_BASE}/api/chart?code=${encodeURIComponent(
-        c
+        c,
       )}&start=${encodeURIComponent(s)}&end=${encodeURIComponent(
-        e
-      )}&period=D&is_mock=false`;
+        e,
+      )}&period=D&is_mock=false&market=${encodeURIComponent(market)}`;
 
       const res = await fetch(url);
 
@@ -97,12 +120,44 @@ export default function HomeScreen() {
         throw new Error("응답 형식이 예상과 달라(ohlcv 없음).");
       }
 
-      setData({
-        code: json.code ?? c,
-        ohlcv: json.ohlcv,
-        signals: json.signals ?? [],
-        summary: json.summary ?? {},
+      // 시간 형식 변환: "20240101" -> 타임스탬프
+      const ohlcvWithTimestamp = json.ohlcv.map((item: any) => {
+        // "20240101" -> Date -> timestamp in seconds
+        const dateStr = item.time;
+        const year = parseInt(dateStr.substring(0, 4));
+        const month = parseInt(dateStr.substring(4, 6)) - 1; // JS month is 0-11
+        const day = parseInt(dateStr.substring(6, 8));
+        const timestamp = Math.floor(new Date(year, month, day).getTime() / 1000);
+        
+        return {
+          ...item,
+          time: timestamp
+        };
       });
+
+      // signals도 동일하게 변환
+      const signalsWithTimestamp = (json.signals ?? []).map((signal: any) => {
+        const dateStr = signal.time;
+        const year = parseInt(dateStr.substring(0, 4));
+        const month = parseInt(dateStr.substring(4, 6)) - 1;
+        const day = parseInt(dateStr.substring(6, 8));
+        const timestamp = Math.floor(new Date(year, month, day).getTime() / 1000);
+        
+        return {
+          ...signal,
+          time: timestamp
+        };
+      });
+
+      const processedData = {
+        code: json.code ?? c,
+        name: stockName || json.name || "",
+        ohlcv: ohlcvWithTimestamp.slice(-100), // 최근 100개 데이터만
+        signals: signalsWithTimestamp,
+        summary: json.summary ?? {}
+      };
+      
+      setData(processedData);
     } catch (e: any) {
       setErr(e?.message ?? "요청 실패");
     } finally {
@@ -147,8 +202,11 @@ export default function HomeScreen() {
   function handleSearch(bool: boolean) {
     setSearch(bool);
   }
-  function handleCode(cd: string) {
+  function handleCode(cd: string, name?: string) {
     setCode(cd);
+    if (name) {
+      setStockName(name);
+    }
   }
   const html = useMemo(() => {
     const ohlcv = data?.ohlcv ?? [];
@@ -282,6 +340,7 @@ export default function HomeScreen() {
             ]}
           >
             <ThemeToggle />
+            <MarketToggle />
             {/* ThemeToggle 내부에서 light/dark 바꾸는 switch/segmented control */}
           </View>
           <ScrollView
@@ -290,7 +349,7 @@ export default function HomeScreen() {
               {
                 backgroundColor:
                   scheme === "dark" ? "transparent" : C.background,
-                paddingBottom: 140,
+                paddingBottom: 140 + insets.bottom,
               },
             ]}
             keyboardShouldPersistTaps="handled"
@@ -299,15 +358,18 @@ export default function HomeScreen() {
 
             <View style={styles.formRow}>
               <View style={styles.field}>
-                <Text style={styles.label}>종목코드(6자리)</Text>
+                <Text style={styles.label}>
+                  종목코드({market === "KOREA" ? "6자리" : "영문"})
+                </Text>
                 <TextInput
                   value={code}
                   onChangeText={setCode}
-                  placeholder="예: 005930"
+                  placeholder={market === "KOREA" ? "예: 005930" : "예: AAPL"}
                   placeholderTextColor={C.textMuted}
-                  keyboardType="number-pad"
-                  maxLength={6}
+                  keyboardType={market === "KOREA" ? "number-pad" : "default"}
+                  maxLength={market === "KOREA" ? 6 : 5}
                   style={styles.input}
+                  autoCapitalize="characters"
                 />
               </View>
 
@@ -370,19 +432,7 @@ export default function HomeScreen() {
 
             {data && (
               <View style={styles.summary}>
-                <Text style={styles.data}>종목: {data.code}</Text>
-                <Text style={styles.data}>
-                  Latest close: {data.summary?.latest_close ?? "-"}
-                </Text>
-                <Text style={styles.data}>
-                  Signals: {data.summary?.num_signals ?? 0}
-                </Text>
-                <Text style={styles.data}>
-                  Latest signal:{" "}
-                  {data.summary?.latest_signal
-                    ? `${data.summary.latest_signal.type} @ ${data.summary.latest_signal.time}`
-                    : "None"}
-                </Text>
+                <Text style={styles.data}>종목: {data.name || data.code}</Text>
               </View>
             )}
 
@@ -394,15 +444,12 @@ export default function HomeScreen() {
                   javaScriptEnabled
                   domStorageEnabled
                   mixedContentMode="always"
-                  onError={(e) =>
-                    console.log("WEBVIEW onError:", e.nativeEvent)
-                  }
-                  onHttpError={(e) =>
-                    console.log("WEBVIEW onHttpError:", e.nativeEvent)
-                  }
-                  onMessage={(e) =>
-                    console.log("WEBVIEW MSG:", e.nativeEvent.data)
-                  }
+                  onMessage={(e) => {
+                    const msg = e.nativeEvent.data;
+                    if (msg && msg.includes("ERROR")) {
+                      setErr(`차트 오류: ${msg}`);
+                    }
+                  }}
                 />
               ) : (
                 <View style={styles.empty}>
@@ -412,25 +459,20 @@ export default function HomeScreen() {
                 </View>
               )}
             </View>
+
+            {data && (
+              <View style={styles.analysisButtonContainer}>
+                <Pressable
+                  onPress={fetchAnalysis}
+                  style={[styles.button, { backgroundColor: C.primary }]}
+                >
+                  <Text style={[styles.buttonText, { color: C.primaryText }]}>
+                    {analysisLoading ? "분석중..." : "AI 분석"}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
           </ScrollView>
-          <View
-            style={[
-              styles.bottomBar,
-              {
-                backgroundColor:
-                  scheme === "dark" ? "transparent" : C.background,
-              },
-            ]}
-          >
-            <Pressable
-              onPress={fetchAnalysis}
-              style={[styles.button, { backgroundColor: C.primary }]}
-            >
-              <Text style={[styles.buttonText, { color: C.primaryText }]}>
-                {analysisLoading ? "분석중..." : "AI 분석"}
-              </Text>
-            </Pressable>
-          </View>
         </Container>
       )}
     </Container>
@@ -458,7 +500,7 @@ function createStyles(
       position: "absolute",
       left: 0,
       right: 0,
-      bottom: 100,
+      bottom: 80,
       paddingHorizontal: 12,
       paddingBottom: 12,
     },
@@ -565,5 +607,9 @@ function createStyles(
       padding: 16,
     },
     emptyText: { color: C.textMuted, fontWeight: "600" },
+
+    analysisButtonContainer: {
+      marginTop: 5,
+    },
   });
 }

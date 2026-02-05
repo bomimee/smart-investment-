@@ -1,4 +1,5 @@
 import { useTheme } from "@/provider/ThemeContext";
+import { useMarket } from "@/provider/MarketContext";
 import { useEffect, useMemo, useState } from "react";
 import {
   View,
@@ -13,8 +14,8 @@ import {
 export const API_BASE = process.env.EXPO_PUBLIC_API_BASE!;
 
 type Item = {
-  code: string; // "005930"
-  name: string; // "삼성전자"
+  code: string; // "005930" or "AAPL"
+  name: string; // "삼성전자" or "Apple Inc."
 };
 
 export default function SearchCode({
@@ -22,9 +23,10 @@ export default function SearchCode({
   handleCode,
 }: {
   handleSearch: (v: boolean) => void;
-  handleCode: (code: string) => void;
+  handleCode: (code: string, name?: string) => void;
 }) {
   const { theme, scheme } = useTheme();
+  const { market } = useMarket();
   const C = theme.colors;
 
   const [searchWords, setSearchWords] = useState("");
@@ -46,7 +48,7 @@ export default function SearchCode({
         setLoading(true);
         setError(null);
 
-        const url = `${API_BASE}/api/list`;
+        const url = market === "US" ? `${API_BASE}/api/list?market=US` : `${API_BASE}/api/list`;
         const res = await fetch(url);
 
         if (!res.ok) {
@@ -91,13 +93,15 @@ export default function SearchCode({
   return (
     <Container {...containerProps} style={{ flex: 1 }}>
       <View style={{ padding: 16 }}>
-        <Text style={{ color: C.text, marginBottom: 8 }}>종목코드(6자리)</Text>
+        <Text style={{ color: C.text, marginBottom: 8 }}>
+          종목코드({market === 'KOREA' ? '6자리' : '영문'})
+        </Text>
         <TextInput
           value={searchWords}
           onChangeText={setSearchWords}
           placeholder="종목이름 또는 코드"
           placeholderTextColor={C.textMuted}
-          maxLength={6}
+          maxLength={market === 'KOREA' ? 6 : 5}
           style={{
             borderWidth: 1,
             borderColor: C.border,
@@ -105,6 +109,7 @@ export default function SearchCode({
             borderRadius: 10,
             color: C.text,
           }}
+          autoCapitalize="characters"
         />
 
         {loading && (
@@ -124,7 +129,7 @@ export default function SearchCode({
             <Pressable
               onPress={() => {
                 handleSearch(false);
-                handleCode(item.code);
+                handleCode(item.code, item.name);
               }}
               style={{
                 paddingVertical: 12,

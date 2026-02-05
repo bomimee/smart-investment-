@@ -2,7 +2,8 @@ import requests
 from backend.app.core.config import (
     DOMAIN_REAL, DOMAIN_VTS,
     PATH_DAILY_CHART,
-    DEFAULT_CONTENT_TYPE, DEFAULT_CUSTTYPE,
+    DEFAULT_CONTENT_TYPE, DEFAULT_CUSTTYPE,ㅔ]]]]]]]]]]]
+
 )
 from backend.app.schemas.models import DailyChartQueryParam
 

@@ -1,0 +1,182 @@
+[
+  {
+    "symbol": "AAPL",
+    "name": "Apple Inc.",
+    "sector": "Technology",
+    "description": "Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide."
+  },
+  {
+    "symbol": "MSFT",
+    "name": "Microsoft Corporation",
+    "sector": "Technology",
+    "description": "Microsoft Corporation develops, licenses, and supports software, services, devices and solutions worldwide."
+  },
+  {
+    "symbol": "GOOGL",
+    "name": "Alphabet Inc.",
+    "sector": "Technology",
+    "description": "Alphabet Inc. provides online advertising services in the United States, Europe, the Middle East, Africa, the Asia-Pacific, Canada, and Latin America."
+  },
+  {
+    "symbol": "AMZN",
+    "name": "Amazon.com Inc.",
+    "sector": "Consumer Discretionary",
+    "description": "Amazon.com, Inc. engages in the retail sale of consumer products and subscriptions in North America and internationally."
+  },
+  {
+    "symbol": "TSLA",
+    "name": "Tesla Inc.",
+    "sector": "Consumer Discretionary",
+    "description": "Tesla, Inc. designs, develops, manufactures, leases, and sells electric vehicles, and energy generation and storage systems."
+  },
+  {
+    "symbol": "NVDA",
+    "name": "NVIDIA Corporation",
+    "sector": "Technology",
+    "description": "NVIDIA Corporation operates as a visual computing company worldwide."
+  },
+  {
+    "symbol": "META",
+    "name": "Meta Platforms Inc.",
+    "sector": "Technology",
+    "description": "Meta Platforms, Inc. develops products that enable people to connect and share through mobile devices, personal computers, virtual reality headsets, and wearables worldwide."
+  },
+  {
+    "symbol": "BRK.B",
+    "name": "Berkshire Hathaway Inc.",
+    "sector": "Financial Services",
+    "description": "Berkshire Hathaway Inc. operates as a property and casualty insurance company."
+  },
+  {
+    "symbol": "JNJ",
+    "name": "Johnson & Johnson",
+    "sector": "Healthcare",
+    "description": "Johnson & Johnson researches, develops, manufactures, and sells health care products worldwide."
+  },
+  {
+    "symbol": "JPM",
+    "name": "JPMorgan Chase & Co.",
+    "sector": "Financial Services",
+    "description": "JPMorgan Chase & Co. operates as a financial services company worldwide."
+  },
+  {
+    "symbol": "V",
+    "name": "Visa Inc.",
+    "sector": "Financial Services",
+    "description": "Visa Inc. operates as a payments technology company worldwide."
+  },
+  {
+    "symbol": "PG",
+    "name": "Procter & Gamble Co.",
+    "sector": "Consumer Staples",
+    "description": "The Procter & Gamble Company provides consumer packaged goods worldwide."
+  },
+  {
+    "symbol": "UNH",
+    "name": "UnitedHealth Group Inc.",
+    "sector": "Healthcare",
+    "description": "UnitedHealth Group Incorporated operates as a diversified health and well-being company in the United States."
+  },
+  {
+    "symbol": "HD",
+    "name": "Home Depot Inc.",
+    "sector": "Consumer Discretionary",
+    "description": "The Home Depot, Inc. operates as a home improvement retailer."
+  },
+  {
+    "symbol": "MA",
+    "name": "Mastercard Inc.",
+    "sector": "Financial Services",
+    "description": "Mastercard Incorporated operates as a technology company worldwide."
+  },
+  {
+    "symbol": "BAC",
+    "name": "Bank of America Corp.",
+    "sector": "Financial Services",
+    "description": "Bank of America Corporation operates as a bank holding company that provides banking and financial products and services."
+  },
+  {
+    "symbol": "XOM",
+    "name": "Exxon Mobil Corp.",
+    "sector": "Energy",
+    "description": "Exxon Mobil Corporation explores for and produces crude oil and natural gas in the United States and internationally."
+  },
+  {
+    "symbol": "CVX",
+    "name": "Chevron Corp.",
+    "sector": "Energy",
+    "description": "Chevron Corporation operates as an integrated energy company worldwide."
+  },
+  {
+    "symbol": "LLY",
+    "name": "Eli Lilly and Co.",
+    "sector": "Healthcare",
+    "description": "Eli Lilly and Company discovers, develops, and sells pharmaceutical products worldwide."
+  },
+  {
+    "symbol": "PFE",
+    "name": "Pfizer Inc.",
+    "sector": "Healthcare",
+    "description": "Pfizer Inc. discovers, develops, manufactures, and sells biopharmaceutical products worldwide."
+  },
+  {
+    "symbol": "ABBV",
+    "name": "AbbVie Inc.",
+    "sector": "Healthcare",
+    "description": "AbbVie Inc. discovers, develops, manufactures, and sells pharmaceutical products worldwide."
+  },
+  {
+    "symbol": "TMO",
+    "name": "Thermo Fisher Scientific",
+    "sector": "Healthcare",
+    "description": "Thermo Fisher Scientific Inc. provides life sciences solutions worldwide."
+  },
+  {
+    "symbol": "DHR",
+    "name": "Danaher Corp.",
+    "sector": "Healthcare",
+    "description": "Danaher Corporation designs, manufactures, and markets professional, medical, industrial, and commercial products and services worldwide."
+  },
+  {
+    "symbol": "COST",
+    "name": "Costco Wholesale Corp.",
+    "sector": "Consumer Staples",
+    "description": "Costco Wholesale Corporation operates membership warehouses."
+  },
+  {
+    "symbol": "WMT",
+    "name": "Walmart Inc.",
+    "sector": "Consumer Staples",
+    "description": "Walmart Inc. operates as a retailer, and wholesale clubs worldwide."
+  },
+  {
+    "symbol": "MCD",
+    "name": "McDonald's Corp.",
+    "sector": "Consumer Discretionary",
+    "description": "McDonald's Corporation operates and franchises McDonald's restaurants worldwide."
+  },
+  {
+    "symbol": "KO",
+    "name": "Coca-Cola Co.",
+    "sector": "Consumer Staples",
+    "description": "The Coca-Cola Company manufactures, markets, and sells various beverages worldwide."
+  },
+  {
+    "symbol": "PEP",
+    "name": "PepsiCo Inc.",
+    "sector": "Consumer Staples",
+    "description": "PepsiCo, Inc. manufactures, markets, and distributes various beverages and foods worldwide."
+  },
+  {
+    "symbol": "DIS",
+    "name": "Walt Disney Co.",
+    "sector": "Consumer Discretionary",
+    "description": "The Walt Disney Company operates as an entertainment company worldwide."
+  },
+  {
+    "symbol": "NFLX",
+    "name": "Netflix Inc.",
+    "sector": "Consumer Discretionary",
+    "description": "Netflix, Inc. provides entertainment services worldwide."
+  }
+]
