@@ -1,5 +1,5 @@
-APP_KEY = ""
-APP_SECRET = ""
+APP_KEY = "PSHYrvNvSdmlAOhLKUdaym5ylu4V7V17Yekg"
+APP_SECRET = "rxnzUHZZRrPhYcekRix3FkwrAZGs1h3MF2tdVO3K6hpL+v2pzFtO5M04TeF8Jhext9keP8k9aCEwlevU+PnhEF4hfis6R2qedYJ2yRVwFkk2gOcg1xvz3pjIqG10CBMY+yP4Nc5b69RMrFGTLe1ErL7lwlGYgAn/cqZQ27MfeD3OJfCvEwM="
 DOMAIN_REAL = "https://openapi.koreainvestment.com:9443"
 DOMAIN_VTS = "https://openapivts.koreainvestment.com:29443"
 PATH = "/oauth2/Approval"
@@ -15,13 +15,13 @@ PATH_TOKEN = "/oauth2/tokenP"
 DEFAULT_CONTENT_TYPE = "application/json; charset=utf-8"
 DEFAULT_CUSTTYPE = "P"
 
-OPENAI_API_KEY = ""
+OPENAI_API_KEY = "AIzaSyBxm_HOjRv7YoZAnt2X3WyUmZvawfbwpHU"
 GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 WEB_CLIENT_ID = (
     "1080162791522-m7qtr31gopbd60sbo5q7f8qt41p5i3mv.apps.googleusercontent.com"
 )
-KAKAO_REST_KEY = ""  # 내 앱의 REST API 키로 변경 필수
+KAKAO_REST_KEY = "79e97b402dec41b958cb37d23906a6be"  # 내 앱의 REST API 키로 변경 필수
 kauth_host = "https://kauth.kakao.com"  # 액세스 토큰 요청을 보낼 카카오 인증 서버 주소
 kapi_host = "https://kapi.kakao.com"  # 카카오 API 호출 서버 주소
 
